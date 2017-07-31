@@ -283,9 +283,6 @@ namespace Microsoft.VisualStudio.SlowCheetah.VS
         {
             IVsProject project = (IVsProject)hierarchy;
 
-            // Get the project configurations to use in comparing the name
-            IEnumerable<string> configs = ProjectUtilities.GetProjectConfigurations(hierarchy);
-
             if (ErrorHandler.Failed(project.GetMkDocument(parentId, out documentPath)))
             {
                 docId = 0;
@@ -293,7 +290,7 @@ namespace Microsoft.VisualStudio.SlowCheetah.VS
             }
 
             // Start by checking if the parent is the source file
-            if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName, configs))
+            if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName))
             {
                 docId = parentId;
                 return true;
@@ -311,7 +308,7 @@ namespace Microsoft.VisualStudio.SlowCheetah.VS
                     return false;
                 }
 
-                if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName, configs))
+                if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName))
                 {
                     return true;
                 }
@@ -324,7 +321,7 @@ namespace Microsoft.VisualStudio.SlowCheetah.VS
                         docId = (uint)(int)childIdObj;
                         if (ErrorHandler.Succeeded(project.GetMkDocument(docId, out documentPath)))
                         {
-                            if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName, configs))
+                            if (PackageUtilities.IsFileTransform(Path.GetFileName(documentPath), transformName))
                             {
                                 return true;
                             }
